@@ -88,3 +88,23 @@ console.log(child1);
 console.log(child2);
 console.log(child1.toString());
 console.log(child2.toString());
+
+// Lab 4: Control structure
+
+const people = [adult1, adult2, adult3, child1, child2];
+
+console.log("\neveryone - for");
+for(let i = 0; i < people.length; i++) {
+    console.log(people[i].toString());
+}
+
+console.log("\nshow only even person - for");
+for(let i = 0; i < people.length; i += 2) {
+    console.log(people[i].toString());
+}
+
+console.log("\neveryone - forEach");
+people.forEach(person => console.log(person.toString()));
+
+console.log("\nshow only even person - forEach");
+people.forEach((person, index) => index % 2 === 0 && console.log(person.toString()));
