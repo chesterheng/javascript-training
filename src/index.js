@@ -108,3 +108,47 @@ people.forEach(person => console.log(person.toString()));
 
 console.log("\nshow only even person - forEach");
 people.forEach((person, index) => index % 2 === 0 && console.log(person.toString()));
+
+// Lab 5: Advanced functions and asynchronous programming
+
+const displayPeopleIdentity = people => {
+  for (let i = 0; i < people.length; i++) {
+    setTimeout(() => console.log(`displayPeopleIdentity ${people[i].toString()} ${i}`), 1000);
+  }
+}
+
+const displayPeopleIdentityIIFE = people => {
+  for (let i = 0; i < people.length; i++) {
+    (function (x) {
+      setTimeout(() => console.log(`displayPeopleIdentityIIFE ${people[x].toString()} ${x}`), 2000);
+    })(i);
+  }
+}
+
+const displayPeopleIdentityForEach = people => {
+  people.forEach((person, index) =>
+    setTimeout(() => console.log(`displayPeopleIdentityForEach ${person.toString()} ${index}`), 3000)
+  );
+}
+
+const displayPeopleIdentityLet = people => {
+  for (let i = 0; i < people.length; i++) {
+    let person = people[i];
+    setTimeout(() => console.log(`displayPeopleIdentityLet ${person.toString()} ${i}`), 4000);
+  }
+}
+
+const delegatedFunction = (index, array) => 
+  console.log(`displayPeopleIdentityDelegatedFunction ${array[index].toString()} ${index}`);
+
+const displayPeopleIdentityDelegatedFunction = people => {
+  for (var i = 0; i < people.length; i++) {
+    setTimeout(delegatedFunction(i, people), 5000);
+  }
+}
+
+displayPeopleIdentity(people);
+displayPeopleIdentityIIFE(people);
+displayPeopleIdentityForEach(people);
+displayPeopleIdentityLet(people);
+displayPeopleIdentityDelegatedFunction(people);
