@@ -152,3 +152,25 @@ displayPeopleIdentityIIFE(people);
 displayPeopleIdentityForEach(people);
 displayPeopleIdentityLet(people);
 displayPeopleIdentityDelegatedFunction(people);
+
+// Lab 6: Error Management
+
+const displayPeopleIdentityError = people => {
+  people.forEach(person => {
+    setTimeout(() => {
+      try {
+        if (person instanceof Child) {
+            const error = new Error("It is a child");
+            error.name = `${person.firstName} ${person.lastName}`;
+            throw error;
+        }
+        console.log(`displayPeopleIdentityError ${person.toString()}`);
+      } catch (error) {
+        console.log(error);
+      }
+
+    }, 1000);
+  })
+}
+
+displayPeopleIdentityError(people);
