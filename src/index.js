@@ -232,3 +232,149 @@ addOneYear(people);
 console.log(`Average age = ${calculateAverageAgeWithLongFirstName(people)}`);
 addOneYearNoSideEffect(people);
 console.log(`Average age = ${calculateAverageAgeWithLongFirstName(people)}`);
+
+// Lab 8: Create a small program
+
+/**
+ * Car
+ * @constructor
+ * @param {String} brand        Car brand
+ * @param {String} model        Model of the car
+ * @param {Number} acceleration Power of acceleration
+ * @param {Number} maxSpeed     maximum speed of the car
+ * @param {String} message      Description of the car
+ */
+class Car {
+  constructor(brand, model, acceleration, maxSpeed, message){
+    this.brand = brand;
+    this.model = model;
+    this.speed = 0;
+    this.distanceTraveled = 0;
+    this.acceleration = acceleration;
+    this.maxSpeed = maxSpeed;
+    this.startupMessage = message;
+    this.started = false;
+  }
+
+  start() {
+    if (!this.started) {
+      this.distanceTraveled = 0;
+      console.log(this.startupMessage);
+      this.started = true;
+    }
+  }
+
+  accelerate() {
+    if (!this.started) {
+        throw new Error("Unable to accelerate please start me first !");
+    }
+    if (this.speed < this.maxSpeed) {
+        this.speed += this.acceleration;
+        this.speed = Math.min(this.speed, this.maxSpeed);
+    }
+  }
+
+  updateDistance() {
+    this.distanceTraveled += this.speed / 3600;
+  }
+}
+
+
+/**
+ * Ferrari F355
+ * @constructor
+ */
+class F355 extends Car {
+    constructor() {
+      super('Ferrari', 'F355', 20, 250, 'I am Ferrari F355, starting !');
+    }
+}
+
+
+/**
+ * Audi R8
+ * @constructor
+ */
+class AR8 extends Car {
+  constructor() {
+    super('Audi', 'R8', 30, 230, 'I am Audi R8, starting');
+  }
+}
+
+
+/**
+ * Peugeot 206
+ * @constructor
+ */
+class P206 extends Car {
+  constructor() {
+    super('Peugeot', '206', 15, 150, 'I am Peugeot 206, starting');
+  }
+}
+
+
+/**
+ * Draw a car by lot and remove it from the car list.
+ * @return return the car drawn.
+ */
+const drawCar = cars => {
+    const random = Math.floor(Math.random() * cars.length);
+    const choosen = cars.splice(random, 1)[0];
+    return choosen;
+}
+
+/**
+ * Draw 2 cars and remove them from the car list.
+ * @return return a table with the 2 cars drawn.
+ */
+const draw2Car = cars => [drawCar(cars), drawCar(cars)];
+
+/**
+ * Returns the vehicle that has traveled 1km.
+ * @return return vehicle having traveled 1km, null if no vehicle has traveled 1km.
+ */
+const getCar1KmDone = cars => {
+  for (let i = 0; i < cars.length; i++) {
+    if (cars[i].distanceTraveled >= 1) {
+        return cars[i];
+    }
+  }
+
+  return null;
+}
+
+const startCourse = cars => {
+
+  const updateCourse = () => {
+    for (let i = 0; i < carsForTheRace.length; i++) {
+      try {
+        const car = carsForTheRace[i];
+        car.accelerate();
+        car.updateDistance();
+        console.log(`${car.brand} ${car.model} roll at ${car.speed} km/h and traveled ${car.distanceTraveled.toFixed(2)} km`);
+      } catch (error) {
+        console.log(error);
+        return;
+      }
+    }
+    
+    const winner = getCar1KmDone(carsForTheRace);
+    if (!winner) {
+      setTimeout(updateCourse, 1000);
+    } else {
+      console.log(`${winner.brand} ${winner.model} won`);
+    }
+  }
+
+  const carsForTheRace = draw2Car(cars);
+  carsForTheRace[0].start();
+  carsForTheRace[1].start();
+
+  updateCourse();
+}
+
+const r8 = new AR8();
+const f355 = new F355();
+const p206 = new P206();
+
+startCourse([r8, f355, p206]);
