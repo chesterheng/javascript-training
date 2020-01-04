@@ -25,42 +25,41 @@ const displayTemplate = (firstName, lastName) => {
 console.log(display(firstName, lastName));
 console.log(displayTemplate(firstName, lastName));
 
-// Lab 3: The objects - prototypes
+// Lab 3: The objects - classes
 
-// Person function has prototype property that point to Person prototype object
-function Person(firstName, lastName, age) {
-  this.firstName = firstName;
-  this.lastName = lastName;
-  this.age = age;
+class Person {
+  constructor (firstName, lastName, age){
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.age = age;
+  }
+  toString() {
+    return `${this.firstName} ${this.lastName} ${this.age} years`;
+  }
 }
 
-// Person prototype object contains toString() and constructor function
-Person.prototype.toString = function () {
-  return `${this.firstName} ${this.lastName} ${this.age} years`;
-};
-
-function Adult(firstName, lastName, age, hasDrivingLicense) {
-  // this is a placeholder for current object instance
-  // call() method calls a function with this and arguments
-  Person.call(this, firstName, lastName, age);
-  this.hasDrivingLicense = hasDrivingLicense;
+class Adult extends Person {
+  constructor (firstName, lastName, age, hasDrivingLicense){
+    super(firstName, lastName, age);
+    this.hasDrivingLicense = hasDrivingLicense;
+  }
+  toString() {
+    return `${super.toString()} and possession of license ? ${this.hasDrivingLicense}`
+  }
 }
 
-Adult.prototype.toString = function () {
-  return `${Person.prototype.toString.call(this)} and possession of license ? ${this.hasDrivingLicense}`;
-};
-
-function Child(firstName, lastName, age, gradeLevel) {
-  Person.call(this, firstName, lastName, age);
-  this.gradeLevel = gradeLevel;
+class Child extends Person {
+  constructor (firstName, lastName, age, gradeLevel){
+    super(firstName, lastName, age);
+    this.gradeLevel = gradeLevel;
+  }
+  toString() {
+    return `${super.toString()} in grade level of ${this.gradeLevel}`;
+  }
 }
 
-Child.prototype.toString = function () {
-  return `${Person.prototype.toString.call(this)} in grade level of ${this.gradeLevel}`;
-};
-
-const person1 = new Person('Lecoq', 'Jordan', 6);
-const person2 = new Person('Lecoq', 'Vanessa', 12);
+const person1 = new Person('Lecoq', 'Jordan', 6);	
+const person2 = new Person('Lecoq', 'Vanessa', 12);	
 
 // Adult object has __proto__ property which point to Adult prototype object
 const adult1 = new Adult('Doe', 'John', 30, true);
