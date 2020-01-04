@@ -174,3 +174,61 @@ const displayPeopleIdentityError = people => {
 }
 
 displayPeopleIdentityError(people);
+
+// Lab 7: Libraries
+
+import _ from "lodash";
+import moment from "moment";
+
+// Create a function to find all adults
+const findAllAdults = people => _.filter(people, ({ age }) => age >= 18);
+
+// Create a function to separate adults between those who have the license, and those who do not 
+const findAllDrivers = people => _.filter(people, ({ hasDrivingLicense }) => hasDrivingLicense);
+
+// Create a function to create a new list of people or everyone is 1 year older
+const addOneYear = people => 
+  _.map(people, person => {
+    person.age += 1;
+    return person;
+  });
+
+// Create a function to calculate the year of birth of a person based on the current date and age
+const calculateYearOfBirth = ({ age }) => moment().subtract(age, 'years').year();
+
+// Create a function to calculate the average age of people whose first name has more than 4 letters
+const calculateAverageAgeWithLongFirstName = people =>
+  _(people)
+    .filter(({ firstName }) => firstName.length > 4)
+    .map(({ age }) => age)
+    .reduce((previous, current, i, array) => previous + (current / array.length), 0);
+
+const calculateAverageAgeWithLongFirstName2 = people =>
+  _(people)
+    .filter(({ firstName }) => firstName.length > 4)
+    .meanBy('age');
+
+console.log('\nFind all adults');
+console.log(findAllAdults(people).join('\n'))
+
+console.log('\nFind all drivers');
+console.log(findAllDrivers(people).join('\n'));
+
+console.log('\nAdd one year for everyone');
+console.log(addOneYear(people).join('\n'));
+
+console.log('\n');
+for (let i = 0; i < people.length; i++) {
+  console.log(`${people[i].firstName} ${people[i].lastName} was born in ${calculateYearOfBirth(people[i])}`);
+}
+
+console.log(`\nAverage age = ${calculateAverageAgeWithLongFirstName(people)}`);
+console.log(`\nAverage age = ${calculateAverageAgeWithLongFirstName2(people)}`);
+
+const addOneYearNoSideEffect = people => 
+  _.map(people, person => _.assign(new Person(), person, { age: person.age + 1 }));
+
+addOneYear(people);
+console.log(`Average age = ${calculateAverageAgeWithLongFirstName(people)}`);
+addOneYearNoSideEffect(people);
+console.log(`Average age = ${calculateAverageAgeWithLongFirstName(people)}`);
